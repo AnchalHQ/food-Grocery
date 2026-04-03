@@ -1,0 +1,67 @@
+
+import datetime
+
+# Initial Inventory
+inventory = {
+    "Milk": {"price": 50, "stock": 20},
+    "Bread": {"price": 40, "stock": 15},
+    "Eggs": {"price": 6, "stock": 100},
+    "Rice": {"price": 80, "stock": 50},
+}
+
+def display_menu():
+    print("\n--- Current Inventory ---")
+    print(f"{'Item':<10} | {'Price':<10} | {'Stock':<10}")
+    print("-" * 35)
+    for item, details in inventory.items():
+        print(f"{item:<10} | ₹{details['price']:<9} | {details['stock']:<10}")
+
+def generate_bill():
+    cart = {}
+    total = 0
+    print("\nEnter items to buy (type 'done' to finish):")
+    
+    while True:
+        item = input("Item Name: ").capitalize()
+        if item == "Done":
+            break
+        
+        if item in inventory and inventory[item]['stock'] > 0:
+            qty = int(input(f"Quantity for {item}: "))
+            if qty <= inventory[item]['stock']:
+                inventory[item]['stock'] -= qty
+                cart[item] = qty * inventory[item]['price']
+                total += cart[item]
+            else:
+                print("Insufficient stock!")
+        else:
+            print("Item not found or out of stock.")
+
+    # Print Receipt
+    print("\n" + "="*30)
+    print("      GROCERY RECEIPT")
+    print(f"Date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print("="*30)
+    for item, price in cart.items():
+        print(f"{item:<15} ₹{price}")
+    print("-" * 30)
+    print(f"TOTAL AMOUNT:  ₹{total}")
+    print("="*30)
+
+def main():
+    while True:
+        print("\n1. View Inventory\n2. Generate Bill\n3. Exit")
+        choice = input("Select an option: ")
+        
+        if choice == '1':
+            display_menu()
+        elif choice == '2':
+            generate_bill()
+        elif choice == '3':
+            print("Exiting... Thank you!")
+            break
+        else:
+            print("Invalid choice.")
+
+if __name__ == "__main__":
+    main()
